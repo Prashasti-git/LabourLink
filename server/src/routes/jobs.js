@@ -46,7 +46,7 @@ function computeMatchScore(job, worker) {
 // GET /api/jobs - list open jobs, optionally filtered by skill/city,
 // optionally scored+sorted for a specific worker via ?worker_id=
 router.get("/", async (req, res) => {
-  const { skill, city, worker_id } = req.query;
+  const { skill, city, worker_id, hirer_id } = req.query;
   const conditions = ["status = 'open'"];
   const values = [];
 
@@ -57,6 +57,10 @@ router.get("/", async (req, res) => {
   if (city) {
     values.push(`%${city}%`);
     conditions.push(`location ILIKE $${values.length}`);
+  }
+  if (hirer_id) {
+    values.push(hirer_id);
+    conditions.push(`hirer_id = $${values.length}`);
   }
 
   const query = `SELECT * FROM jobs WHERE ${conditions.join(" AND ")} ORDER BY created_at DESC`;

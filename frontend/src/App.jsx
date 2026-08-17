@@ -6,6 +6,7 @@ import Toast from './components/Toast';
 import HomePage from './pages/HomePage';
 import RegistrationPage from './pages/RegistrationPage';
 import ProfilePage from './pages/ProfilePage';
+import FindWorkersPage from './pages/FindWorkersPage';
 import InfoPage from './pages/InfoPage';
 import { useScrollState } from './hooks/useScrollState';
 import { useReveal } from './hooks/useReveal';
@@ -47,6 +48,7 @@ export default function App() {
       <Route path="/:type" element={<RegistrationPage notify={notify} currentUser={currentUser} onLogin={updateCurrentUser} />} />
       <Route path="/about" element={<InfoPage />} />
       <Route path="/profile" element={<ProfilePage notify={notify} currentUser={currentUser} onProfileLoad={updateCurrentUser} onLogout={clearSession} />} />
+      <Route path="/find-workers" element={<FindWorkersPage notify={notify} currentUser={currentUser} />} />
       <Route path="/support" element={<InfoPage />} />
       <Route path="/privacy" element={<InfoPage />} />
       <Route path="/terms" element={<InfoPage />} />

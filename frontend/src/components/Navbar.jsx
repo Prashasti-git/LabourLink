@@ -5,7 +5,9 @@ export default function Navbar({ scrolled, menuOpen, setMenuOpen, currentUser, o
   const navigate = useNavigate();
   const go = (path) => { navigate(path); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); };
   const items = currentUser
-    ? [{ label: 'For Workers', path: '/workers' }, { label: 'For Hirers', path: '/hirers' }, { label: 'My Profile', path: '/profile' }]
+    ? (currentUser.role === 'hirer'
+        ? [{ label: 'Find Workers', path: '/find-workers' }, { label: 'My Profile', path: '/profile' }]
+        : [{ label: 'For Workers', path: '/workers' }, { label: 'My Profile', path: '/profile' }])
     : [{ label: 'For Workers', path: '/workers' }, { label: 'For Hirers', path: '/hirers' }, { label: 'Login', path: '/login' }];
   const logout = () => {
     clearCurrentUser();

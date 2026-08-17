@@ -60,6 +60,23 @@ export default function ProfilePage({ notify, currentUser, onProfileLoad, onLogo
           <div className="profile-role-badge">{roleLabel}</div>
         </div>
 
+        {!loading && user.profile_completeness !== undefined && (
+          <section className="profile-card profile-completeness-card">
+            <div className="profile-card-heading">
+              <span className="profile-card-icon">%</span>
+              <div><h2>Profile Strength</h2><p>{user.profile_completeness}% complete</p></div>
+            </div>
+            <div className="completeness-bar-track">
+              <div className="completeness-bar-fill" style={{ width: `${user.profile_completeness}%` }} />
+            </div>
+            {user.profile_suggestions && user.profile_suggestions.length > 0 && (
+              <ul className="completeness-suggestions">
+                {user.profile_suggestions.map((s) => <li key={s}>{s}</li>)}
+              </ul>
+            )}
+          </section>
+        )}
+
         {loading ? <div className="profile-loading">Loading your profile…</div> : (
           <div className="profile-content">
             <section className="profile-card profile-contact-card">

@@ -40,3 +40,23 @@ export function loginUser({ phone, password }) {
 export function fetchUserProfile(id) {
   return request(`/users/${id}`, { method: "GET" });
 }
+
+export function fetchWorkers({ skill, city, jobId } = {}) {
+  const params = new URLSearchParams();
+  if (skill) params.set("skill", skill);
+  if (city) params.set("city", city);
+  if (jobId) params.set("job_id", jobId);
+  const query = params.toString() ? `?${params.toString()}` : "";
+  return request(`/users/workers${query}`, { method: "GET" });
+}
+
+export function createJob(job) {
+  return request("/jobs", {
+    method: "POST",
+    body: JSON.stringify(job),
+  });
+}
+
+export function fetchMyJobs(hirerId) {
+  return request(`/jobs?hirer_id=${hirerId}`, { method: "GET" });
+}
