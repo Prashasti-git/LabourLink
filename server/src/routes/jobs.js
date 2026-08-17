@@ -89,6 +89,14 @@ router.get("/", async (req, res) => {
     }
 
     res.json(jobs);
+
+    // Fire-and-forget search logging for Phase 3 data collection - never
+    // block or fail the actual response if this insert has a problem.
+    pool.query(
+      `INSERT INTO search_logs (searched_by, search_type, skill, city, results_count)
+       VALUES ($1, 'jobs', $2, $3, $4)`,
+      [worker_id || null, skill || null, city || null, jobs.length]
+    ).catch((err) => console.error("search_logs insert failed:", err.message));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch jobs" });

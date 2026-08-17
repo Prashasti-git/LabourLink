@@ -147,6 +147,12 @@ router.get("/workers", async (req, res) => {
     }
 
     res.json(workers);
+
+    pool.query(
+      `INSERT INTO search_logs (searched_by, search_type, skill, city, results_count)
+       VALUES ($1, 'workers', $2, $3, $4)`,
+      [job_id ? null : null, skill || null, city || null, workers.length]
+    ).catch((err) => console.error("search_logs insert failed:", err.message));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch workers" });

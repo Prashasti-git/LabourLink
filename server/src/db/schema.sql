@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   budget NUMERIC,
   urgency TEXT CHECK (urgency IN ('low', 'medium', 'high')) DEFAULT 'medium',
   status TEXT CHECK (status IN ('open', 'in_progress', 'completed', 'cancelled')) DEFAULT 'open',
+  final_wage NUMERIC,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -58,3 +59,16 @@ CREATE TABLE IF NOT EXISTS ratings (
   comment TEXT,
   created_at TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS search_logs (
+  id SERIAL PRIMARY KEY,
+  searched_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  search_type TEXT CHECK (search_type IN ('jobs', 'workers')) NOT NULL,
+  skill TEXT,
+  city TEXT,
+  results_count INTEGER,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Safe to re-run: adds final_wage to an existing jobs table without error
+ALTER TABLE jobs ADD COLUMN IF NOT EXISTS final_wage NUMERIC;
